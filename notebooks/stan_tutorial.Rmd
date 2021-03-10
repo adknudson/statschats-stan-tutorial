@@ -1,0 +1,68 @@
+---
+title: "Stan Tutorial"
+author: "Alex Knudson"
+date: "3/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load-libraries}
+library(rstan)
+library(rstanarm)
+library(ggplot2)
+library(bayesplot)
+
+library(magrittr)
+
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+```
+
+
+
+# Basics of Hamiltonian Monte Carlo
+
+# Simple Linear Regression
+
+## Data
+
+```{r}
+load("../data/simple_linear_model.rda")
+str(simple_linear_model)
+ggplot(simple_linear_model, aes(x, y)) + geom_point()
+```
+
+## Frequentist
+
+```{r}
+lm(y ~ x, data = simple_linear_model) %>% 
+  summary()
+```
+
+
+## Bayesian
+
+
+$$
+\begin{align}
+y &\sim \mathcal{N}(\mu, \sigma) \\
+\mu &= \alpha + \beta x \\
+\alpha &\sim \mathcal{N}(0, 1) \\
+\beta &\sim \mathcal{N}(0, 1) \\
+\sigma &\sim \mathrm{Exponential(1)}
+\end{align}
+$$
+
+
+```{r}
+slm <- stan_glm(y ~ x, family = gaussian(link = "identity"), 
+                data = simple_linear_model,
+                refresh = 0)
+
+slm %>% summary()
+```
+
