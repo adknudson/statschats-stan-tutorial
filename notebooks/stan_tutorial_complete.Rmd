@@ -312,17 +312,12 @@ parameters {
 }
 
 model {
-  vector[N] lambda;
-  
   // Priors
   a ~ normal(0, 100);
   b ~ normal(0, 100);
   
-  // variables
-  lambda = a + b*Temp;
-  
   // likelihood
-  Ozone ~ poisson(lambda);
+  Ozone ~ poisson_log(a + b*Temp);
 }
 ```
 
@@ -342,7 +337,7 @@ dat_aq <- list(
 
 ```{r poiss-fit-stan}
 stan_poiss_fit <- sampling(poisson_stan, data = dat_aq,
-                           cores = 4)
+                           cores = 4, refresh = 0)
 ```
 
 
@@ -353,10 +348,6 @@ poiss_post <- rstan::extract(stan_poiss_fit)
 str(poiss_post)
 ```
 
-
-# Other Types of Models
-
-Let's hear from the group
 
 ---
 
