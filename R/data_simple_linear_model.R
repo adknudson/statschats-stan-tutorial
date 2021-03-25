@@ -1,6 +1,6 @@
 set.seed(2020-03-10)
 
-n <- 100
+n <- 30
 x <- rnorm(n)
 y <- rnorm(n, 3*x + 2)
 
