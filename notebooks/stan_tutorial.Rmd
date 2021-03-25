@@ -11,7 +11,8 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-```{r load-libraries}
+```{r load-libraries, echo=TRUE, results='hide', message=FALSE}
+# box loads specific packages+functions into the namespace (similar to Python's import)
 box::use(
   rstan[...],
   rstanarm[stan_glm, normal],
@@ -22,6 +23,7 @@ box::use(
   magrittr[`%>%`]
 )
 
+# rstan has a startup message recommending to set these two options
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 ```
@@ -78,7 +80,8 @@ $$
 ```{r load-synth-data}
 load("../data/simple_linear_model.rda")
 str(simple_linear_model)
-ggplot(simple_linear_model, aes(x, y)) + geom_point()
+ggplot(simple_linear_model, aes(x, y)) + 
+  geom_point()
 ```
 
 ## Model Fitting
